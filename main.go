@@ -1,16 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"time"
+	database "booking/db"
+
+	"github.com/labstack/echo"
 )
 
-func greet(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World! %s", time.Now())
-}
-
 func main() {
-	http.HandleFunc("/", greet)
-	http.ListenAndServe(":8080", nil)
+	e := echo.New()
+	database.NewDB()
+
+	e.Logger.Fatal(e.Start(":8080"))
 }
