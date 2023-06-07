@@ -1,7 +1,8 @@
 package main
 
 import (
-	database "booking/db"
+	"booking/controllers"
+	"booking/database"
 
 	"github.com/labstack/echo"
 )
@@ -9,6 +10,8 @@ import (
 func main() {
 	e := echo.New()
 	database.NewDB()
+
+	e.GET("/api/v1/rooms", controllers.GetRooms)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
