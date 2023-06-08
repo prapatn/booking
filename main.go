@@ -20,5 +20,10 @@ func main() {
 	e.POST("/api/v1/users", controllers.CreateUser)
 	e.POST("/api/v1/users/grade", controllers.SetUserGrade)
 
+	// e.GET("/api/v1/bookings", controllers.GetBookings)
+	e.POST("/api/v1/bookings", controllers.CreateBooking)
+	e.PUT("/api/v1/bookings/:id", controllers.UpdateBooking)
+	e.DELETE("/api/v1/bookings/:id", controllers.DeleteBooking)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
