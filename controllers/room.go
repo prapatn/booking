@@ -60,7 +60,7 @@ func UpdateRoom(c echo.Context) error {
 	id := c.Param("id")
 	err = usecases.UpdateRoom(room, id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.String(http.StatusBadRequest, err.Error())
 	}
 	return c.String(http.StatusCreated, "Success")
 }

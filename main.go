@@ -17,5 +17,8 @@ func main() {
 	e.PUT("/api/v1/rooms/:id", controllers.UpdateRoom)
 	e.DELETE("/api/v1/rooms/:id", controllers.DeleteRoom)
 
+	e.POST("/api/v1/users", controllers.CreateUser)
+	e.POST("/api/v1/users/grade", controllers.SetUserGrade)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
