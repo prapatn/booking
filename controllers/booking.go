@@ -8,14 +8,15 @@ import (
 	"github.com/labstack/echo"
 )
 
-//	func GetBookings(c echo.Context) error {
-//		bookings := new([]bookings.Show)
-//		err := usecases.GetAllBookings(bookings)
-//		if err != nil {
-//			return c.String(http.StatusBadRequest, err.Error())
-//		}
-//		return c.JSON(http.StatusOK, bookings)
-//	}
+func GetBookings(c echo.Context) error {
+	bookings := new([]bookings.Show)
+	err := usecases.GetAllBookings(bookings)
+	if err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, bookings)
+}
+
 func CreateBooking(c echo.Context) error {
 	booking := new(bookings.Add)
 	err := c.Bind(booking)

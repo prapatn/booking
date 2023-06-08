@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"booking/entities"
 	"booking/entities/rooms"
 	"booking/repository"
 	"errors"
@@ -8,6 +9,16 @@ import (
 
 func GetAllRooms(rooms *[]rooms.Show) error {
 	err := repository.GetRooms(rooms)
+	if err != nil {
+		print(err)
+		return err
+	}
+
+	return nil
+}
+
+func GetAllRoomsWithBookings(rooms *[]entities.Room) error {
+	err := repository.GetRoomsWithBookings(rooms)
 	if err != nil {
 		print(err)
 		return err

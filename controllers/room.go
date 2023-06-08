@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"booking/entities"
 	"booking/entities/rooms"
 	"booking/usecases"
 	"net/http"
@@ -17,6 +18,14 @@ func GetRooms(c echo.Context) error {
 	return c.JSON(http.StatusOK, rooms)
 }
 
+func GetRoomsWithBookings(c echo.Context) error {
+	rooms := new([]entities.Room)
+	err := usecases.GetAllRoomsWithBookings(rooms)
+	if err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, rooms)
+}
 func GetRoom(c echo.Context) error {
 	room := new(rooms.Show)
 	id := c.Param("id")

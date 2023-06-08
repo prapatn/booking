@@ -12,3 +12,10 @@ type User struct {
 	CGrade     string    `json:"c_grade"`
 	Bookings   []Booking `gorm:"foreignKey:UsersID" json:"bookings"`
 }
+
+func (u *User) getFullName() string {
+	if u.NamePrefix != "" {
+		return u.NamePrefix + "." + u.FisrtName + " " + u.LastName
+	}
+	return u.FisrtName + " " + u.LastName
+}

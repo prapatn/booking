@@ -6,15 +6,15 @@ import (
 	"errors"
 )
 
-// func GetAllBookings(bookings *[]bookings.Show) error {
-// 	err := repository.GetBookings(bookings)
-// 	if err != nil {
-// 		print(err)
-// 		return err
-// 	}
+func GetAllBookings(bookings *[]bookings.Show) error {
+	err := repository.GetBookings(bookings)
+	if err != nil {
+		print(err)
+		return err
+	}
 
-// 	return nil
-// }
+	return nil
+}
 
 func CreateBooking(booking *bookings.Add) error {
 	err := repository.CreateBooking(booking)
