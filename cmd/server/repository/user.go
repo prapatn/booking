@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"booking/database"
-	"booking/entities/users"
+	"booking/cmd/server/database"
+	"booking/cmd/server/entities/users"
 )
 
 func CreateUser(user *users.Register) error {

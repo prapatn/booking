@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"booking/entities/bookings"
-	"booking/usecases"
+	"booking/cmd/server/entities/bookings"
+	"booking/cmd/server/usecases"
 	"net/http"
 
 	"github.com/labstack/echo"

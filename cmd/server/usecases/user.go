@@ -1,8 +1,9 @@
 package usecases
 
 import (
-	"booking/entities/users"
-	"booking/repository"
+	"booking/cmd/server/entities/users"
+	"booking/cmd/server/repository"
+
 	"errors"
 )
 

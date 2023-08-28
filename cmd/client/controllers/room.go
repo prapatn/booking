@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"booking/entities"
-	"booking/entities/rooms"
-	"booking/usecases"
+	"booking/cmd/server/entities"
+	"booking/cmd/server/entities/rooms"
+	"booking/cmd/server/usecases"
 	"net/http"
 
 	"github.com/labstack/echo"

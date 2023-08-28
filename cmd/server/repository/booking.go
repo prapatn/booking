@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"booking/database"
-	"booking/entities"
-	"booking/entities/bookings"
+	"booking/cmd/server/database"
+	"booking/cmd/server/entities"
+	"booking/cmd/server/entities/bookings"
 )
 
 func GetBookings(bookings *[]bookings.Show) error {

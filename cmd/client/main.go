@@ -1,8 +1,8 @@
 package main
 
 import (
-	"booking/controllers"
-	"booking/database"
+	"booking/cmd/client/controllers"
+	"booking/cmd/server/database"
 
 	"github.com/labstack/echo"
 )
