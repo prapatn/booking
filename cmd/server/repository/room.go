@@ -4,9 +4,10 @@ import (
 	"booking/cmd/server/database"
 	"booking/cmd/server/entities"
 	"booking/cmd/server/entities/rooms"
+	"booking/pb"
 )
 
-func GetRooms(rooms *[]rooms.Show) error {
+func GetRooms(rooms *[]*pb.GetRoomResponse) error {
 	return database.DB.Model(&entities.Room{}).Find(rooms).Error
 }
 

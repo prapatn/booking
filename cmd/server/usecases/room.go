@@ -4,10 +4,11 @@ import (
 	"booking/cmd/server/entities"
 	"booking/cmd/server/entities/rooms"
 	"booking/cmd/server/repository"
+	"booking/pb"
 	"errors"
 )
 
-func GetAllRooms(rooms *[]rooms.Show) error {
+func GetAllRooms(rooms *[]*pb.GetRoomResponse) error {
 	err := repository.GetRooms(rooms)
 	if err != nil {
 		print(err)
@@ -17,11 +18,32 @@ func GetAllRooms(rooms *[]rooms.Show) error {
 	return nil
 }
 
-func GetAllRoomsWithBookings(rooms *[]entities.Room) error {
-	err := repository.GetRoomsWithBookings(rooms)
+func GetAllRoomsWithBookings(res *[]*pb.GetRoomWithBookingResponse) error {
+	var rooms []entities.Room
+	err := repository.GetRoomsWithBookings(&rooms)
 	if err != nil {
 		print(err)
 		return err
+	}
+
+	for _, r := range rooms {
+		var bookings []*pb.GetBookingResponse
+		for _, booking := range r.Bookings {
+			bookings = append(bookings, &pb.GetBookingResponse{
+				Id:           int64(booking.ID),
+				RoomId:       int64(booking.RoomsID),
+				UserId:       int64(booking.UsersID),
+				AmountPerson: int64(booking.AmountPerson),
+				StartDate:    booking.StartDate.Format("15:04:05 01/02/2006"),
+				EndDate:      booking.EndDate.Format("15:04:05 01/02/2006"),
+			})
+		}
+		*res = append(*res, &pb.GetRoomWithBookingResponse{
+			Id:            int64(r.ID),
+			RoomName:      r.RoomName,
+			MaximumPerson: int64(r.MaximumPerson),
+			Bookings:      bookings,
+		})
 	}
 
 	return nil

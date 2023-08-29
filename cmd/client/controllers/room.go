@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"booking/cmd/server/entities"
 	"booking/cmd/server/entities/rooms"
 	"booking/cmd/server/usecases"
 	"booking/pb"
@@ -23,13 +22,12 @@ func (r RoomsClient) GetRooms(c echo.Context) error {
 	return c.JSON(http.StatusOK, rooms.GetRoomResponse)
 }
 
-func GetRoomsWithBookings(c echo.Context) error {
-	rooms := new([]entities.Room)
-	err := usecases.GetAllRoomsWithBookings(rooms)
+func (r RoomsClient) GetRoomsWithBookings(c echo.Context) error {
+	rooms, err := r.Client.GetRoomsWithBookings(c.Request().Context(), &empty.Empty{})
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-	return c.JSON(http.StatusOK, rooms)
+	return c.JSON(http.StatusOK, rooms.Rooms)
 }
 func GetRoom(c echo.Context) error {
 	room := new(rooms.Show)

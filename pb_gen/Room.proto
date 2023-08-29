@@ -6,6 +6,11 @@ import "google/protobuf/empty.proto";
 
 service Rooms {
   rpc GetRooms (google.protobuf.Empty) returns (GetRoomsResponse);
+  rpc GetRoomsWithBookings (google.protobuf.Empty) returns (GetRoomsWithBookingsResponse);
+  // rpc GetRoom (google.protobuf.Empty) returns (GetRoomsResponse);
+  // rpc CreateRoom (google.protobuf.Empty) returns (GetRoomsResponse);
+  // rpc UpdateRoom (google.protobuf.Empty) returns (GetRoomsResponse);
+  // rpc DeleteRoom (google.protobuf.Empty) returns (GetRoomsResponse);
 }
 
 
@@ -17,4 +22,24 @@ message GetRoomResponse {
   int64 id = 1;
   string room_name = 2;
   int64 maximum_person = 3;
+}
+
+message GetRoomsWithBookingsResponse {
+  repeated GetRoomWithBookingResponse rooms = 1;
+}
+
+message GetRoomWithBookingResponse {
+  int64 id = 1;
+  string room_name = 2;
+  int64 maximum_person = 3;
+  repeated GetBookingResponse bookings = 4;
+}
+
+message GetBookingResponse {
+  int64 id = 1;
+  int64 room_id = 2;
+  int64 user_id = 3;
+  int64 amount_person = 4;
+  string start_date = 5;
+  string end_date = 6;
 }

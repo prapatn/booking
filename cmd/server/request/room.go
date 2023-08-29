@@ -1,7 +1,6 @@
 package request
 
 import (
-	"booking/cmd/server/entities/rooms"
 	"booking/cmd/server/usecases"
 	"booking/pb"
 	"context"
@@ -15,21 +14,24 @@ type RoomsServer struct {
 
 func (s *RoomsServer) GetRooms(ctx context.Context, emp *emptypb.Empty) (*pb.GetRoomsResponse, error) {
 	var res []*pb.GetRoomResponse
-	rooms := new([]rooms.Show)
-
-	err := usecases.GetAllRooms(rooms)
+	err := usecases.GetAllRooms(&res)
 	if err != nil {
 		print(err)
 		return nil, err
 	}
 
-	for _, r := range *rooms {
-		res = append(res, &pb.GetRoomResponse{
-			Id:            int64(r.ID),
-			RoomName:      r.RoomName,
-			MaximumPerson: int64(r.MaximumPerson),
-		})
-	}
 	roomsResponse := pb.GetRoomsResponse{GetRoomResponse: res}
 	return &roomsResponse, nil
+}
+
+func (s *RoomsServer) GetRoomsWithBookings(ctx context.Context, emp *emptypb.Empty) (*pb.GetRoomsWithBookingsResponse, error) {
+	var rooms []*pb.GetRoomWithBookingResponse
+	err := usecases.GetAllRoomsWithBookings(&rooms)
+	if err != nil {
+		print(err)
+		return nil, err
+	}
+
+	res := pb.GetRoomsWithBookingsResponse{Rooms: rooms}
+	return &res, nil
 }
