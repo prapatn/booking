@@ -2,13 +2,16 @@ package routes
 
 import (
 	"booking/cmd/client/controllers"
+	"booking/pb"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 func Init(e *echo.Echo) {
+	conn := controllers.NewClient()
+	room := controllers.RoomsClient{Client: pb.NewRoomsClient(conn)}
 
-	e.GET("/api/v1/rooms", controllers.GetRooms)
+	e.GET("/api/v1/rooms", room.GetRooms)
 	e.GET("/api/v1/rooms/bookings", controllers.GetRoomsWithBookings)
 	e.GET("/api/v1/rooms/:id", controllers.GetRoom)
 	e.POST("/api/v1/rooms", controllers.CreateRoom)

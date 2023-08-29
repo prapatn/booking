@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -22,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RoomsClient interface {
-	GetRooms(ctx context.Context, in *GetPersonRequest, opts ...grpc.CallOption) (*GetRoomResponse, error)
+	GetRooms(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRoomsResponse, error)
 }
 
 type roomsClient struct {
@@ -33,8 +34,8 @@ func NewRoomsClient(cc grpc.ClientConnInterface) RoomsClient {
 	return &roomsClient{cc}
 }
 
-func (c *roomsClient) GetRooms(ctx context.Context, in *GetPersonRequest, opts ...grpc.CallOption) (*GetRoomResponse, error) {
-	out := new(GetRoomResponse)
+func (c *roomsClient) GetRooms(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRoomsResponse, error) {
+	out := new(GetRoomsResponse)
 	err := c.cc.Invoke(ctx, "/pb.Rooms/GetRooms", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -46,7 +47,7 @@ func (c *roomsClient) GetRooms(ctx context.Context, in *GetPersonRequest, opts .
 // All implementations must embed UnimplementedRoomsServer
 // for forward compatibility
 type RoomsServer interface {
-	GetRooms(context.Context, *GetPersonRequest) (*GetRoomResponse, error)
+	GetRooms(context.Context, *emptypb.Empty) (*GetRoomsResponse, error)
 	mustEmbedUnimplementedRoomsServer()
 }
 
@@ -54,7 +55,7 @@ type RoomsServer interface {
 type UnimplementedRoomsServer struct {
 }
 
-func (UnimplementedRoomsServer) GetRooms(context.Context, *GetPersonRequest) (*GetRoomResponse, error) {
+func (UnimplementedRoomsServer) GetRooms(context.Context, *emptypb.Empty) (*GetRoomsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRooms not implemented")
 }
 func (UnimplementedRoomsServer) mustEmbedUnimplementedRoomsServer() {}
@@ -71,7 +72,7 @@ func RegisterRoomsServer(s grpc.ServiceRegistrar, srv RoomsServer) {
 }
 
 func _Rooms_GetRooms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPersonRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -83,7 +84,7 @@ func _Rooms_GetRooms_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/pb.Rooms/GetRooms",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RoomsServer).GetRooms(ctx, req.(*GetPersonRequest))
+		return srv.(RoomsServer).GetRooms(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -1,16 +1,20 @@
 syntax="proto3";
 package pb;
 option go_package="./pb";
+import "google/protobuf/empty.proto";
 // import "google/protobuf/timestamp.proto";
 
 service Rooms {
-  rpc GetRooms (GetPersonRequest) returns (GetRoomResponse);
+  rpc GetRooms (google.protobuf.Empty) returns (GetRoomsResponse);
 }
 
-message GetPersonRequest {}
+
+message GetRoomsResponse {
+  repeated GetRoomResponse get_room_response = 1;
+}
 
 message GetRoomResponse {
-  int64 ID = 1;
-  string RoomName = 2;
-  int64 MaximumPerson = 3;
+  int64 id = 1;
+  string room_name = 2;
+  int64 maximum_person = 3;
 }

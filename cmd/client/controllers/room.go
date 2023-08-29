@@ -4,18 +4,23 @@ import (
 	"booking/cmd/server/entities"
 	"booking/cmd/server/entities/rooms"
 	"booking/cmd/server/usecases"
+	"booking/pb"
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/labstack/echo/v4"
 )
 
-func GetRooms(c echo.Context) error {
-	rooms := new([]rooms.Show)
-	err := usecases.GetAllRooms(rooms)
+type RoomsClient struct {
+	Client pb.RoomsClient
+}
+
+func (r RoomsClient) GetRooms(c echo.Context) error {
+	rooms, err := r.Client.GetRooms(c.Request().Context(), &empty.Empty{})
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-	return c.JSON(http.StatusOK, rooms)
+	return c.JSON(http.StatusOK, rooms.GetRoomResponse)
 }
 
 func GetRoomsWithBookings(c echo.Context) error {
