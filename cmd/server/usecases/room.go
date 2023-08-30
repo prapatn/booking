@@ -2,7 +2,6 @@ package usecases
 
 import (
 	"booking/cmd/server/entities"
-	"booking/cmd/server/entities/rooms"
 	"booking/cmd/server/repository"
 	"booking/pb"
 	"errors"
@@ -49,7 +48,7 @@ func GetAllRoomsWithBookings(res *[]*pb.GetRoomWithBookingResponse) error {
 	return nil
 }
 
-func GetRoomsByID(room *rooms.Show, id string) error {
+func GetRoomsByID(room *pb.GetRoomResponse, id *string) error {
 	err := repository.GetRoomByID(room, id)
 	if err != nil {
 		print(err)
@@ -59,7 +58,7 @@ func GetRoomsByID(room *rooms.Show, id string) error {
 	return nil
 }
 
-func CreateRoom(room *rooms.Form) error {
+func CreateRoom(room *pb.CreateRoomRequest) error {
 	err := repository.CreateRoom(room)
 	if err != nil {
 		print(err)
@@ -69,7 +68,7 @@ func CreateRoom(room *rooms.Form) error {
 	return nil
 }
 
-func UpdateRoom(room *rooms.Form, id string) error {
+func UpdateRoom(room *pb.UpdateRoomRequest, id string) error {
 	rowAffected := repository.UpdateRoom(room, id)
 	if rowAffected == 0 {
 		return errors.New("Update Fail")

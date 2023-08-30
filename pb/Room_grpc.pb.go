@@ -25,6 +25,10 @@ const _ = grpc.SupportPackageIsVersion7
 type RoomsClient interface {
 	GetRooms(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRoomsResponse, error)
 	GetRoomsWithBookings(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRoomsWithBookingsResponse, error)
+	GetRoomById(ctx context.Context, in *GetRoomsByIdRequest, opts ...grpc.CallOption) (*GetRoomResponse, error)
+	CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateRoom(ctx context.Context, in *UpdateRoomRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteRoom(ctx context.Context, in *DeleteRoomByIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type roomsClient struct {
@@ -53,12 +57,52 @@ func (c *roomsClient) GetRoomsWithBookings(ctx context.Context, in *emptypb.Empt
 	return out, nil
 }
 
+func (c *roomsClient) GetRoomById(ctx context.Context, in *GetRoomsByIdRequest, opts ...grpc.CallOption) (*GetRoomResponse, error) {
+	out := new(GetRoomResponse)
+	err := c.cc.Invoke(ctx, "/pb.Rooms/GetRoomById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomsClient) CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/pb.Rooms/CreateRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomsClient) UpdateRoom(ctx context.Context, in *UpdateRoomRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/pb.Rooms/UpdateRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomsClient) DeleteRoom(ctx context.Context, in *DeleteRoomByIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/pb.Rooms/DeleteRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RoomsServer is the server API for Rooms service.
 // All implementations must embed UnimplementedRoomsServer
 // for forward compatibility
 type RoomsServer interface {
 	GetRooms(context.Context, *emptypb.Empty) (*GetRoomsResponse, error)
 	GetRoomsWithBookings(context.Context, *emptypb.Empty) (*GetRoomsWithBookingsResponse, error)
+	GetRoomById(context.Context, *GetRoomsByIdRequest) (*GetRoomResponse, error)
+	CreateRoom(context.Context, *CreateRoomRequest) (*emptypb.Empty, error)
+	UpdateRoom(context.Context, *UpdateRoomRequest) (*emptypb.Empty, error)
+	DeleteRoom(context.Context, *DeleteRoomByIdRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedRoomsServer()
 }
 
@@ -71,6 +115,18 @@ func (UnimplementedRoomsServer) GetRooms(context.Context, *emptypb.Empty) (*GetR
 }
 func (UnimplementedRoomsServer) GetRoomsWithBookings(context.Context, *emptypb.Empty) (*GetRoomsWithBookingsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoomsWithBookings not implemented")
+}
+func (UnimplementedRoomsServer) GetRoomById(context.Context, *GetRoomsByIdRequest) (*GetRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoomById not implemented")
+}
+func (UnimplementedRoomsServer) CreateRoom(context.Context, *CreateRoomRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRoom not implemented")
+}
+func (UnimplementedRoomsServer) UpdateRoom(context.Context, *UpdateRoomRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRoom not implemented")
+}
+func (UnimplementedRoomsServer) DeleteRoom(context.Context, *DeleteRoomByIdRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoom not implemented")
 }
 func (UnimplementedRoomsServer) mustEmbedUnimplementedRoomsServer() {}
 
@@ -121,6 +177,78 @@ func _Rooms_GetRoomsWithBookings_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Rooms_GetRoomById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoomsByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomsServer).GetRoomById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Rooms/GetRoomById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomsServer).GetRoomById(ctx, req.(*GetRoomsByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Rooms_CreateRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomsServer).CreateRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Rooms/CreateRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomsServer).CreateRoom(ctx, req.(*CreateRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Rooms_UpdateRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomsServer).UpdateRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Rooms/UpdateRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomsServer).UpdateRoom(ctx, req.(*UpdateRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Rooms_DeleteRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRoomByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomsServer).DeleteRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Rooms/DeleteRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomsServer).DeleteRoom(ctx, req.(*DeleteRoomByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Rooms_ServiceDesc is the grpc.ServiceDesc for Rooms service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -135,6 +263,22 @@ var Rooms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRoomsWithBookings",
 			Handler:    _Rooms_GetRoomsWithBookings_Handler,
+		},
+		{
+			MethodName: "GetRoomById",
+			Handler:    _Rooms_GetRoomById_Handler,
+		},
+		{
+			MethodName: "CreateRoom",
+			Handler:    _Rooms_CreateRoom_Handler,
+		},
+		{
+			MethodName: "UpdateRoom",
+			Handler:    _Rooms_UpdateRoom_Handler,
+		},
+		{
+			MethodName: "DeleteRoom",
+			Handler:    _Rooms_DeleteRoom_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

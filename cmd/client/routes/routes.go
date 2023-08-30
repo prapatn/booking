@@ -16,10 +16,10 @@ func Init(e *echo.Echo) {
 
 	e.GET("/api/v1/rooms", room.GetRooms)
 	e.GET("/api/v1/rooms/bookings", room.GetRoomsWithBookings)
-	e.GET("/api/v1/rooms/:id", controllers.GetRoom)
-	e.POST("/api/v1/rooms", controllers.CreateRoom)
-	e.PUT("/api/v1/rooms/:id", controllers.UpdateRoom)
-	e.DELETE("/api/v1/rooms/:id", controllers.DeleteRoom)
+	e.GET("/api/v1/rooms/:id", room.GetRoom)
+	e.POST("/api/v1/rooms", room.CreateRoom)
+	e.PUT("/api/v1/rooms/:id", room.UpdateRoom)
+	e.DELETE("/api/v1/rooms/:id", room.DeleteRoom)
 
 	e.POST("/api/v1/users", controllers.CreateUser)
 	e.POST("/api/v1/users/grade", controllers.SetUserGrade)

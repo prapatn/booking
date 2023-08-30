@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"booking/cmd/server/entities/rooms"
-	"booking/cmd/server/usecases"
 	"booking/pb"
 	"net/http"
 
@@ -29,17 +28,16 @@ func (r RoomsClient) GetRoomsWithBookings(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, rooms.Rooms)
 }
-func GetRoom(c echo.Context) error {
-	room := new(rooms.Show)
+func (r RoomsClient) GetRoom(c echo.Context) error {
 	id := c.Param("id")
-	err := usecases.GetRoomsByID(room, id)
+	room, err := r.Client.GetRoomById(c.Request().Context(), &pb.GetRoomsByIdRequest{Id: id})
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, room)
 }
 
-func CreateRoom(c echo.Context) error {
+func (r RoomsClient) CreateRoom(c echo.Context) error {
 	room := new(rooms.Form)
 	err := c.Bind(room)
 	if err != nil {
@@ -51,14 +49,21 @@ func CreateRoom(c echo.Context) error {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 
-	err = usecases.CreateRoom(room)
+	_, err = r.Client.CreateRoom(
+		c.Request().Context(),
+		&pb.CreateRoomRequest{
+			RoomName:      room.RoomName,
+			MaximumPerson: int64(room.MaximumPerson),
+		},
+	)
+
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 	return c.String(http.StatusCreated, "Success")
 }
 
-func UpdateRoom(c echo.Context) error {
+func (r RoomsClient) UpdateRoom(c echo.Context) error {
 	room := new(rooms.Form)
 	err := c.Bind(room)
 	if err != nil {
@@ -69,17 +74,30 @@ func UpdateRoom(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-	id := c.Param("id")
-	err = usecases.UpdateRoom(room, id)
+
+	_, err = r.Client.UpdateRoom(
+		c.Request().Context(),
+		&pb.UpdateRoomRequest{
+			Id:            c.Param("id"),
+			RoomName:      room.RoomName,
+			MaximumPerson: int64(room.MaximumPerson),
+		},
+	)
+
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 	return c.String(http.StatusCreated, "Success")
 }
 
-func DeleteRoom(c echo.Context) error {
-	id := c.Param("id")
-	err := usecases.DeleteRoom(id)
+func (r RoomsClient) DeleteRoom(c echo.Context) error {
+	_, err := r.Client.DeleteRoom(
+		c.Request().Context(),
+		&pb.DeleteRoomByIdRequest{
+			Id: c.Param("id"),
+		},
+	)
+
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
